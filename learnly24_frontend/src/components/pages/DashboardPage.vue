@@ -22,13 +22,9 @@
     <div class="input-group mb-3">
         <input type="text" v-model="searchTerm" placeholder="Search products" class="form-control">
         <button class="btn btn-outline-secondary" type="button" @click="fetchProducts">Search</button>
-        <ul>
-      <!-- <li v-for="product in products" :key="(name)">
-        {{ product.name }}
-      </li> -->
-    </ul>
-
-    
+        <div>
+            {{ myApiResult }}
+        </div>
     </div>
 
  </template>
@@ -46,6 +42,8 @@
      return {
        user: {},
        searchTerm: '',
+       myApiResult: null
+
      };
    },
    created() {
@@ -70,9 +68,14 @@
             redirect: 'follow'
             };
 
-            fetch("http://127.0.0.1:3000/api/products/phone", requestOptions)
+            var mySearch= this.searchTerm;
+            fetch(`http://127.0.0.1:3000/api/products/${mySearch}`, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => {
+                console.log(result);
+                this.myApiResult = result
+
+            })
             .catch(error => console.log('error', error));
         },
 
